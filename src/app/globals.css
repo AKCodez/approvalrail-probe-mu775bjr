@@ -1,0 +1,91 @@
+@import "tailwindcss";
+@import "./brand.generated.css";
+@import "./components.css";
+@import "./motion.css";
+
+/* ---------------------------------------------------------------------------
+   Base layer and the three utilities every component may use.
+
+   Every colour, radius, shadow, duration and type step lives in
+   brand.generated.css, which scripts/brand-gen.ts writes from src/brand.ts.
+   Nothing in this file, and nothing in a component, may name a colour: there is
+   no Tailwind palette left to name one with.
+--------------------------------------------------------------------------- */
+
+@layer base {
+  :root {
+    --focus-width: var(--stroke-strong);
+    --focus-offset: 2px;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    letter-spacing: var(--text-body--letter-spacing);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  hr {
+    border-color: var(--color-line);
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+
+  /* One focus treatment for the whole app. Components opt into `focus-ring`
+     only when the ring belongs on a wrapper rather than the focused element. */
+  :focus-visible {
+    outline: var(--focus-width) solid var(--color-focus);
+    outline-offset: var(--focus-offset);
+  }
+}
+
+/** Ring on a wrapper that contains the focused control (inputs, segmented controls). */
+@utility focus-ring {
+  &:has(:focus-visible) {
+    outline: var(--focus-width) solid var(--color-focus);
+    outline-offset: var(--focus-offset);
+  }
+}
+
+/** Money, counts and timestamps: mono with tabular figures so columns line up. */
+@utility numeric {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/** The measure a paragraph should never exceed. */
+@utility prose-measure {
+  max-width: var(--container-prose);
+}
